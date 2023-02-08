@@ -120,7 +120,7 @@ const Writing = () => {
   const toast = useToast();
 
   const [topicType, setTopicType] = useState(topicTypes[0]);
-  const [topic, setTopic] = useState('');
+  const [question, setQuestion] = useState('');
   const [content, setContent] = useState('');
   const [selectedContent, setSelectedContent] = useState('');
   const [loadingPrompt, setLoadingPrompt] = useState(false);
@@ -136,7 +136,7 @@ const Writing = () => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ topicType, promptType, topic, content }),
+      body: JSON.stringify({ topicType, promptType, question, content }),
     });
     const data = await response.json();
     console.log(response, data);
@@ -233,10 +233,10 @@ const Writing = () => {
             </Select>
           </HStack>
           <HStack alignItems="flex-start" w="100%" gap={2}>
-            <Text>Topic: </Text>
+            <Text>Question: </Text>
             <Textarea
-              value={topic}
-              onChange={(e) => setTopic(e.target.value)}
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
             />
           </HStack>
         </VStack>

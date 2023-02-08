@@ -9,7 +9,7 @@ const openai = new OpenAIApi(configuration);
 
 const isEmpty = (str: string) => !str.trim().length
 
-const getPrompt = (topicType: string, promptType: string, topic: string, content: string) => {
+const getPrompt = (topicType: string, promptType: string, question: string, content: string) => {
   let actor, questionType
   switch (topicType) {
     case 'IELTS Writing':
@@ -33,33 +33,33 @@ const getPrompt = (topicType: string, promptType: string, topic: string, content
   switch (promptType) {
     // Brainstorming
     case 'outline':
-      return `Act as ${actor}. Write an essay outline in response to the following ${questionType} question: ${topic}`
+      return `Act as ${actor}. Write an essay outline in response to the following ${questionType} question: ${question}`
     case 'support_arguments':
-      return `Act as ${actor}. Given the following ${questionType} question, generate 3 arguments to support the statement: ${topic}`
+      return `Act as ${actor}. Given the following ${questionType} question, generate 3 arguments to support the statement: ${question}`
     case 'oppose_arguments':
-      return `Act as ${actor}. Given the following ${questionType} question, generate 3 arguments to oppose the statement: ${topic}`
+      return `Act as ${actor}. Given the following ${questionType} question, generate 3 arguments to oppose the statement: ${question}`
     case 'sample_answer':
-      return `Act as ${actor}. Write an essay in response to the following ${questionType} question with at least 250 words: ${topic}`
+      return `Act as ${actor}. Write an essay in response to the following ${questionType} question with at least 250 words: ${question}`
 
     // While writing
     case 'introduction':
-      return `Act as ${actor}. Write a short introduction paragraph for an essay in response to the following ${questionType} question:: ${topic}`
+      return `Act as ${actor}. Write a short introduction paragraph for an essay in response to the following ${questionType} question:: ${question}`
     case 'conclusion':
       return `Act as ${actor}. Write a short conclusion paragraph for this half-done essay:
 "${content}"
-For your information, the essay is written in response to the following ${questionType} question: ${topic}`
+For your information, the essay is written in response to the following ${questionType} question: ${question}`
     case 'elaborate':
       return `Act as ${actor}. Elaborate/Explain the following argument in 3-4 sentences:
 "${content}"
-For your information, the essay is written in response to the following ${questionType} question: ${topic}`
+For your information, the essay is written in response to the following ${questionType} question: ${question}`
     case 'example':
       return `Act as ${actor}. Give and explain an example in support of the following argument in 1-2 sentences:
 "${content}"
-For your information, the essay is written in response to the following ${questionType} question: ${topic}`
+For your information, the essay is written in response to the following ${questionType} question: ${question}`
     case 'finish_sentence':
       return `Act as ${actor}. Finish this sentence for me:
 "${content}"
-For your information, the essay is written in response to the following ${questionType} question: ${topic}`
+For your information, the essay is written in response to the following ${questionType} question: ${question}`
 
     // Edit essay
     case 'correct_mistakes':
@@ -70,7 +70,7 @@ ${content}`
     case 'make_longer':
       return `Make this ${questionType} essay longer by elaborating on the existing points (don't add more arguments):
 "${content}"
-For your information, the essay is written in response to the following ${questionType} question: ${topic}`
+For your information, the essay is written in response to the following ${questionType} question: ${question}`
     case 'make_simpler':
       return `Rewrite this ${questionType} essay using simpler/more academic language: 
 ${content}`
@@ -119,12 +119,12 @@ export default async function handler(
 
   const temperature = req.body.temperature || 0.5;
 
-  const topic = req.body.topic || '';
+  const question = req.body.question || '';
   const topicType = req.body.topicType || '';
   const promptType = req.body.promptType || '';
   const content = req.body.content || '';
 
-  if (isEmpty(topic) || isEmpty(topicType) || isEmpty(promptType)) {
+  if (isEmpty(question) || isEmpty(topicType) || isEmpty(promptType)) {
     res.status(400).json({
       error: {
         message: 'Invalid args',
@@ -133,7 +133,7 @@ export default async function handler(
     return;
   }
 
-  const prompt = getPrompt(topicType, promptType, topic, content)
+  const prompt = getPrompt(topicType, promptType, question, content)
   if (isEmpty(prompt)) {
     res.status(400).json({
       error: {
