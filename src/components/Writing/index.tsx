@@ -212,12 +212,13 @@ const Writing = () => {
           }}
         >
           <Spinner size="lg" />
+          <Text>Asking ChatGPT, please wait...</Text>
         </HStack>
       )}
       <VStack
         spacing={5}
         padding={5}
-        style={loadingPrompt ? { filter: 'blur(.75px)' } : {}}
+        style={loadingPrompt ? { filter: 'blur(.9px)' } : {}}
       >
         <VStack w={'100%'} spacing={2} alignItems="flex-start">
           <HStack alignItems="flex-start" w="100%" gap={2}>
