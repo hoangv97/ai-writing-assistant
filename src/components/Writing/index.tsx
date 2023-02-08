@@ -124,7 +124,7 @@ const Writing = () => {
   const [content, setContent] = useState('');
   const [selectedContent, setSelectedContent] = useState('');
   const [loadingPrompt, setLoadingPrompt] = useState(false);
-  const [modal, setModal] = useState({ title: '', content: '' });
+  const [result, setResult] = useState({ title: '', content: '' });
 
   const contentRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -139,7 +139,7 @@ const Writing = () => {
       body: JSON.stringify({ topicType, promptType, question, content }),
     });
     const data = await response.json();
-    console.log(response, data);
+    // console.log(response, data);
     setLoadingPrompt(false);
     if (!response.ok) {
       toast({
@@ -181,9 +181,12 @@ const Writing = () => {
               isDisabled={isDisabled}
               onClick={async () => {
                 setSelectContent();
-                const result = await queryPrompt(btn.promptType, content);
-                if (result) {
-                  setModal({ title: btn.name, content: result });
+                const resultContent = await queryPrompt(
+                  btn.promptType,
+                  content
+                );
+                if (resultContent) {
+                  setResult({ title: btn.name, content: resultContent });
                 }
               }}
             >
@@ -277,17 +280,17 @@ const Writing = () => {
               !selectedContent
             )}
 
-            {!!modal.title && (
+            {!!result.title && (
               <VStack alignItems="flex-start">
-                <Heading size="md">{modal.title}</Heading>
+                <Heading size="md">{result.title}</Heading>
                 <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit' }}>
-                  {modal.content}
+                  {result.content}
                 </pre>
                 <HStack>
                   <Button
                     size="sm"
                     onClick={() => {
-                      setContent(modal.content);
+                      setContent(result.content);
                     }}
                   >
                     Insert to editor
