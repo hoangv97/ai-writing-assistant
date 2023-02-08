@@ -18,12 +18,12 @@ const topicTypes = ['IELTS Writing', 'IELTS Speaking', 'Debate'];
 const generateButtons = [
   { name: 'Outline', promptType: 'outline', tooltip: 'Write an essay outline' },
   {
-    name: 'Support arguments',
+    name: 'Supportive arguments',
     promptType: 'support_arguments',
     tooltip: 'generate 3 arguments to support the statement',
   },
   {
-    name: 'Oppose arguments',
+    name: 'Opposite arguments',
     promptType: 'oppose_arguments',
     tooltip: 'generate 3 arguments to oppose the statement',
   },
@@ -120,9 +120,7 @@ const Writing = () => {
   const toast = useToast();
 
   const [topicType, setTopicType] = useState(topicTypes[0]);
-  const [topic, setTopic] = useState(
-    'Acculturation is a process of change in which one culture changes to become more like another culture. Do you think that acculturation is positive or negative?'
-  );
+  const [topic, setTopic] = useState('');
   const [content, setContent] = useState('');
   const [selectedContent, setSelectedContent] = useState('');
   const [loadingPrompt, setLoadingPrompt] = useState(false);
