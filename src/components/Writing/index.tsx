@@ -41,17 +41,20 @@ const generateButtons = [
     name: 'Conclusion',
     promptType: 'conclusion',
     tooltip: 'Write a short conclusion paragraph for this half-done essay',
+    requireContent: true,
   },
   {
     name: 'Improve',
     promptType: 'improve',
     tooltip: 'Improve/Perfect this essay',
+    requireContent: true,
   },
   {
     name: 'Suggestions',
     promptType: 'suggestions',
     tooltip:
       'What are the strengths & weaknesses of this essay? Give your suggestions for improvement for the writer',
+    requireContent: true,
   },
 ];
 
@@ -96,7 +99,7 @@ const contentButtons = [
   {
     name: 'Summarize',
     promptType: 'summarize',
-    tooltip: 'summarize this essay',
+    tooltip: 'Summarize this essay',
   },
 ];
 
@@ -178,7 +181,9 @@ const Writing = () => {
               colorScheme={color}
               variant="outline"
               size="sm"
-              isDisabled={isDisabled}
+              isDisabled={
+                !question || isDisabled || (btn.requireContent && !content)
+              }
               onClick={async () => {
                 setSelectContent();
                 const resultContent = await queryPrompt(
