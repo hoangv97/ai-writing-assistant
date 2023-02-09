@@ -117,7 +117,7 @@ export default async function handler(
     return;
   }
 
-  const temperature = req.body.temperature || 0.5;
+  const temperature = req.body.temperature || 1;
 
   const question = req.body.question || '';
   const topicType = req.body.topicType || '';
@@ -150,9 +150,9 @@ export default async function handler(
       prompt,
       temperature,
       max_tokens: 550,
-      top_p: 1.0,
-      frequency_penalty: 0.0,
-      presence_penalty: 0.0,
+      // top_p: 1.0,
+      // frequency_penalty: 0.0,
+      // presence_penalty: 0.0,
     });
     res.status(200).json({ result: completion.data.choices[0].text });
   } catch (error: any) {
